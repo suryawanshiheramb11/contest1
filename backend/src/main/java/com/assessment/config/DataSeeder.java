@@ -34,11 +34,11 @@ public class DataSeeder implements CommandLineRunner {
         private void seedAdminUser() {
                 if (userRepository.count() == 0) {
                         User admin = new User();
-                        admin.setUsername("admin");
-                        admin.setPassword(passwordEncoder.encode("password"));
+                        admin.setUsername("heramb");
+                        admin.setPassword(passwordEncoder.encode("123456"));
                         admin.setRole("ADMIN");
                         userRepository.save(admin);
-                        System.out.println("✓ Admin user created (username: admin, password: password)");
+                        System.out.println("✓ Admin user created (username: heramb, password: 123456)");
                 }
         }
 
