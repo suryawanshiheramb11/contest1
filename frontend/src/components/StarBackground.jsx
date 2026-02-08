@@ -4,7 +4,7 @@ function StarBackground() {
     // Generate 80 random falling stars
     const stars = useMemo(() => {
         const starArray = [];
-        for (let i = 0; i < 180; i++) {
+        for (let i = 0; i < 400; i++) {
             starArray.push({
                 left: Math.random() * 100,
                 size: Math.random() * 2 + 1,

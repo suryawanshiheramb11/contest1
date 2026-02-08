@@ -26,6 +26,9 @@ public class Question {
     @Column(columnDefinition = "TEXT")
     private String testCases;
 
+    @Column(columnDefinition = "TEXT")
+    private String starterCode;
+
     @Column(nullable = false)
     private LocalDateTime releaseTime;
 
@@ -88,6 +91,14 @@ public class Question {
 
     public void setTestCases(String testCases) {
         this.testCases = testCases;
+    }
+
+    public String getStarterCode() {
+        return starterCode;
+    }
+
+    public void setStarterCode(String starterCode) {
+        this.starterCode = starterCode;
     }
 
     public LocalDateTime getReleaseTime() {

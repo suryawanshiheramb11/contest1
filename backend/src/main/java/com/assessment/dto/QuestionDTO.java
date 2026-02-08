@@ -10,6 +10,7 @@ public class QuestionDTO {
     private String description;
     private String solution;
     private String explanation;
+    private String starterCode;
     private LocalDateTime releaseTime;
     private boolean unlocked;
     private LocalDateTime createdAt;
@@ -27,6 +28,8 @@ public class QuestionDTO {
         dto.setDescription(question.getDescription());
         dto.setSolution(null); // Hidden
         dto.setExplanation(null); // Hidden
+        dto.setStarterCode(question.getStarterCode()); // Visible even if locked? Yes, to peek at code? Actually usually
+                                                       // yes.
         dto.setReleaseTime(question.getReleaseTime());
         dto.setUnlocked(false);
         dto.setCreatedAt(question.getCreatedAt());
@@ -42,6 +45,7 @@ public class QuestionDTO {
         dto.setDescription(question.getDescription());
         dto.setSolution(question.getSolution());
         dto.setExplanation(question.getExplanation());
+        dto.setStarterCode(question.getStarterCode());
         dto.setReleaseTime(question.getReleaseTime());
         dto.setUnlocked(true);
         dto.setCreatedAt(question.getCreatedAt());
@@ -97,6 +101,14 @@ public class QuestionDTO {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public String getStarterCode() {
+        return starterCode;
+    }
+
+    public void setStarterCode(String starterCode) {
+        this.starterCode = starterCode;
     }
 
     public LocalDateTime getReleaseTime() {

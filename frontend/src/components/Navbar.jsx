@@ -18,62 +18,66 @@ function Navbar({ user, onLogout }) {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-gray-800/50">
-            <div className="container mx-auto px-4">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
+            <div className="container mx-auto px-6">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2">
-                        <span className="text-xl font-bold gradient-text">CodeAssess</span>
+                    <Link to="/" className="flex items-center gap-2 group">
+                        <div className="w-8 h-8 rounded-lg bg-white text-black flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                            CA
+                        </div>
+                        <span className="text-lg font-bold text-white tracking-tight group-hover:text-gray-200 transition-colors">
+                            CodeAssess
+                        </span>
                     </Link>
 
                     {/* Navigation */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-6">
                         <Link
                             to="/"
-                            className={`px-4 py-2 transition-colors duration-300 rounded-lg ${isActive('/')
+                            className={`text-sm font-medium transition-colors duration-300 ${isActive('/')
                                 ? 'text-white'
-                                : 'text-gray-400 hover:text-white'
+                                : 'text-zinc-500 hover:text-white'
                                 }`}
                         >
                             Home
                         </Link>
                         <Link
                             to="/questions"
-                            className={`px-4 py-2 transition-colors duration-300 rounded-lg ${isActive('/questions')
+                            className={`text-sm font-medium transition-colors duration-300 ${isActive('/questions')
                                 ? 'text-white'
-                                : 'text-gray-400 hover:text-white'
+                                : 'text-zinc-500 hover:text-white'
                                 }`}
                         >
                             Questions
                         </Link>
 
+                        <div className="h-4 w-px bg-white/10 mx-2"></div>
+
                         {user ? (
                             <div className="flex items-center gap-4">
-                                <span className="text-gray-400 hidden sm:inline">
-                                    Welcome, <span className="text-indigo-400 font-medium">{user.username}</span>
+                                <span className="text-zinc-500 text-sm hidden sm:inline">
+                                    <span className="text-zinc-300">{user?.username}</span>
                                 </span>
                                 {user.role === 'ADMIN' && (
                                     <Link
                                         to="/admin"
-                                        className={`px-4 py-2 rounded-lg transition-colors duration-300 ${isActive('/admin')
-                                            ? 'bg-indigo-600 text-white'
-                                            : 'bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30'
-                                            }`}
+                                        className="text-indigo-400 hover:text-indigo-300 text-sm font-medium"
                                     >
                                         Dashboard
                                     </Link>
                                 )}
                                 <button
                                     onClick={handleLogout}
-                                    className="px-4 py-2 text-gray-400 hover:text-white transition-colors duration-300"
+                                    className="text-zinc-500 hover:text-white text-sm font-medium transition-colors"
                                 >
-                                    Logout
+                                    Log out
                                 </button>
                             </div>
                         ) : (
                             <Link
                                 to="/login"
-                                className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-lg font-medium transition-all"
+                                className="px-4 py-2 bg-white text-black rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors"
                             >
                                 Admin Login
                             </Link>

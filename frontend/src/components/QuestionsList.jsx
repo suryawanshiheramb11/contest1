@@ -42,111 +42,113 @@ function QuestionsList() {
     }
 
     return (
-        <div className="relative min-h-[calc(100vh-64px)]">
+        <div className="relative min-h-[calc(100vh-64px)] bg-black text-white selection:bg-indigo-500/30 font-sans">
+            {/* Subtle Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/10 via-black to-black pointer-events-none" />
             <StarBackground />
 
             <div className="relative z-10">
-                {/* Header Banner */}
-                <div className="bg-amber-500/20 border-b border-amber-500/30 px-6 py-3">
-                    <div className="container mx-auto flex items-center gap-2 text-amber-400 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {/* Header Banner - Practice Mode */}
+                <div className="bg-amber-500/10 border-b border-amber-500/20 px-6 py-2 backdrop-blur-sm">
+                    <div className="container mx-auto flex items-center justify-center gap-3 text-amber-400/90 text-sm font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <span>This is running in Practice Mode. No score will be awarded for submissions in this mode.</span>
+                        <span>Practice Mode Active — Scores are not recorded.</span>
                     </div>
                 </div>
 
-                <div className="container mx-auto px-6 py-8">
+                <div className="container mx-auto px-6 py-12 max-w-6xl">
                     {/* Title Section */}
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-12">
                         <div>
-                            <h1 className="text-2xl font-bold text-white mb-2">All Questions</h1>
-                            <p className="text-gray-400">
-                                {questions.filter(q => isSolved(q.id)).length} / {questions.length} Completed
+                            <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">Question Bank</h1>
+                            <p className="text-gray-400 text-lg">
+                                Master trusted algorithms one by one.
                             </p>
                         </div>
-                        <div className="text-right">
-                            <span className="text-sm text-gray-500">* Mandatory sections</span>
+                        <div className="text-right flex flex-col items-end">
+                            <div className="text-3xl font-bold text-white mb-1">
+                                {questions.filter(q => isSolved(q.id)).length} <span className="text-gray-500 text-lg">/ {questions.length}</span>
+                            </div>
+                            <span className="text-sm text-gray-500 font-medium uppercase tracking-wider">Completed</span>
                         </div>
                     </div>
 
                     {/* Section Card */}
-                    <div className="bg-dark-300/90 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
+                    <div className="bg-[#0a0a0a] rounded-2xl border border-white/5 overflow-hidden shadow-2xl shadow-black/50">
                         {/* Section Header */}
-                        <div className="px-6 py-4 border-b border-gray-700 bg-dark-400/80">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-xs text-gray-500 uppercase tracking-wider">SECTION 1 *</span>
-                                    <h2 className="text-lg font-semibold text-white">Coding Problems</h2>
-                                    <span className="text-sm text-indigo-400">{questions.length} questions</span>
+                        <div className="px-8 py-6 border-b border-white/5 bg-white/[0.02] flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="p-2 bg-indigo-500/10 rounded-lg">
+                                    <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 className="text-lg font-semibold text-white">Algorithms & Data Structures</h2>
+                                    <p className="text-sm text-gray-500">Core interview problems</p>
                                 </div>
                             </div>
+                            <span className="px-3 py-1 bg-white/5 text-gray-400 text-xs font-medium rounded-full border border-white/5">
+                                SECTION 1
+                            </span>
                         </div>
 
                         {/* Table Header */}
-                        <div className="px-6 py-3 border-b border-gray-700 bg-dark-400/50 grid grid-cols-12 gap-4 text-sm font-medium text-gray-500 uppercase tracking-wider">
+                        <div className="px-8 py-4 border-b border-white/5 bg-black/50 grid grid-cols-12 gap-6 text-xs font-semibold text-gray-500 uppercase tracking-widest">
                             <div className="col-span-1">#</div>
-                            <div className="col-span-5">Question</div>
-                            <div className="col-span-2">Type</div>
-                            <div className="col-span-2">Status</div>
-                            <div className="col-span-2">Action</div>
+                            <div className="col-span-6">Question</div>
+                            <div className="col-span-2 text-center">Difficulty</div>
+                            <div className="col-span-3 text-right">Action</div>
                         </div>
 
                         {/* Questions List */}
-                        <div className="divide-y divide-gray-700">
+                        <div className="divide-y divide-white/5">
                             {questions.map((question, i) => (
                                 <div
                                     key={question.id}
-                                    className="px-6 py-4 grid grid-cols-12 gap-4 items-center hover:bg-dark-300/50 transition-colors"
+                                    onClick={() => handleSolve(question)} // Make entire row clickable
+                                    className="px-8 py-5 grid grid-cols-12 gap-6 items-center hover:bg-white/[0.02] transition-colors cursor-pointer group"
                                 >
                                     {/* Number */}
-                                    <div className="col-span-1 flex items-center gap-2">
-                                        <span className="text-lg font-medium text-gray-400">{i + 1}</span>
+                                    <div className="col-span-1 flex items-center gap-3">
+                                        <span className="text-sm font-medium text-gray-500 group-hover:text-white transition-colors">
+                                            {String(i + 1).padStart(2, '0')}
+                                        </span>
                                         {isSolved(question.id) && (
-                                            <span className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
-                                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                </svg>
-                                            </span>
+                                            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                                         )}
                                     </div>
 
                                     {/* Question Title */}
-                                    <div className="col-span-5">
-                                        <h3 className="text-white font-medium">{question.title}</h3>
+                                    <div className="col-span-6">
+                                        <h3 className="text-base font-medium text-gray-200 group-hover:text-white transition-colors flex items-center gap-3">
+                                            {question.title}
+                                            {isSolved(question.id) && (
+                                                <span className="text-emerald-500 text-xs bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                                                    Solved
+                                                </span>
+                                            )}
+                                        </h3>
                                     </div>
 
-                                    {/* Type */}
-                                    <div className="col-span-2">
-                                        <span className="inline-flex items-center gap-1.5 text-gray-400 text-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                            </svg>
-                                            Code
+                                    {/* Difficulty / Type (Mocked as Medium for now) */}
+                                    <div className="col-span-2 text-center">
+                                        <span className="text-xs font-medium text-yellow-500/80 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/20">
+                                            Medium
                                         </span>
                                     </div>
 
-                                    {/* Status */}
-                                    <div className="col-span-2">
-                                        {isSolved(question.id) ? (
-                                            <span className="inline-flex items-center gap-1.5 text-emerald-400 text-sm font-medium">
-                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                </svg>
-                                                Answered Successfully
-                                            </span>
-                                        ) : (
-                                            <span className="text-gray-500 text-sm">Not attempted</span>
-                                        )}
-                                    </div>
-
                                     {/* Action */}
-                                    <div className="col-span-2">
+                                    <div className="col-span-3 text-right">
                                         <button
-                                            onClick={() => handleSolve(question)}
-                                            className="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-colors"
+                                            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all transform duration-200 ${isSolved(question.id)
+                                                ? 'bg-white/5 text-gray-400 hover:bg-white/10'
+                                                : 'bg-white text-black hover:bg-indigo-50 group-hover:translate-x-1'
+                                                }`}
                                         >
-                                            Solve now
+                                            {isSolved(question.id) ? 'Review' : 'Solve Challenge'}
                                         </button>
                                     </div>
                                 </div>

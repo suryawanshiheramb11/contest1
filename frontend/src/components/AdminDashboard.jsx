@@ -139,7 +139,7 @@ function AdminDashboard() {
                     {questions.map((question, i) => (
                         <div key={question.id} className="bg-dark-300/90 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
                             {/* Question Header */}
-                            <div className="px-6 py-4 flex items-center justify-between">
+                            <div className="px-6 py-4 flex items-center justify-between bg-dark-400/50">
                                 <div
                                     onClick={() => setExpandedQuestion(expandedQuestion === question.id ? null : question.id)}
                                     className="flex items-center gap-4 cursor-pointer flex-1"
@@ -156,31 +156,25 @@ function AdminDashboard() {
                                 {/* Action Buttons - Always Visible */}
                                 <div className="flex items-center gap-3">
                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${question.unlocked
-                                            ? 'bg-emerald-500/20 text-emerald-400'
-                                            : 'bg-amber-500/20 text-amber-400'
+                                        ? 'bg-emerald-500/20 text-emerald-400'
+                                        : 'bg-amber-500/20 text-amber-400'
                                         }`}>
                                         {question.unlocked ? 'Unlocked' : 'Locked'}
                                     </span>
 
-                                    {/* Edit Button - More Visible */}
+                                    {/* Edit Button */}
                                     <button
                                         onClick={(e) => { e.stopPropagation(); openEditModal(question); }}
-                                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-indigo-500/30"
+                                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-semibold transition-all"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
                                         Edit
                                     </button>
 
                                     {/* Delete Button */}
                                     <button
                                         onClick={(e) => { e.stopPropagation(); handleDelete(question.id); }}
-                                        className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-sm font-semibold transition-all flex items-center gap-2"
+                                        className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-sm font-semibold transition-all"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
                                         Delete
                                     </button>
 

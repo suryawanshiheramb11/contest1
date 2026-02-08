@@ -1,63 +1,55 @@
 // Gemini API service for validating code submissions
 
-const GEMINI_API_KEY = 'AIzaSyAZJkKSpeDYo-9PfvLmWnR5h0UY1d3PSHU';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+// Using gemini-2.5-flash as requested by the user
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 export async function validateCodeWithGemini(code, problemTitle, problemDescription, expectedSolution) {
     try {
-        const prompt = `You are a Java code evaluator for a coding assessment platform.
+        const prompt = `You are a Java code evaluator.
 
 PROBLEM: ${problemTitle}
+DESCRIPTION: ${problemDescription.replace(/<[^>]*>/g, '').slice(0, 500)}...
 
-PROBLEM DESCRIPTION (summary):
-${problemDescription.replace(/<[^>]*>/g, '').slice(0, 1000)}
-
-STUDENT'S SUBMITTED CODE:
+STUDENT CODE:
 \`\`\`java
 ${code}
 \`\`\`
 
-EXPECTED SOLUTION (reference):
+EXPECTED SOLUTION:
 \`\`\`java
 ${expectedSolution || 'Not provided'}
 \`\`\`
 
-TASK: Evaluate the student's code and determine if it correctly solves the problem.
+TASK: Simulate the execution of the student's code.
+NOTE: The student may define a 'public static void main' method to run tests, OR a 'solve' method matching the problem. 
+- If the code has a 'main' method that prints the correct output for the test cases, mark it as CORRECT.
+- If the code has a method (like 'solve') that returns the correct value, mark it as CORRECT.
+- Do NOT require a specific method name unless the problem description strictly says so.
+- If the class is empty, return logic missing error.
 
-EVALUATION CRITERIA:
-1. Does the code compile (syntactically correct Java)?
-2. Does the algorithm logic appear correct?
-3. Does it handle edge cases appropriately?
-4. Would it produce correct output for typical test cases?
-
-RESPOND IN THIS EXACT JSON FORMAT ONLY (no other text):
+RESPONSE FORMAT (Strict JSON only):
 {
-  "isCorrect": true/false,
+  "isCorrect": boolean,
+  "compilationError": "Error message if code fails to compile, else null",
   "score": 0-100,
-  "feedback": "Brief explanation of why the solution is correct/incorrect",
-  "suggestions": ["suggestion 1", "suggestion 2"] or [],
+  "feedback": "Short feedback",
   "testCaseResults": [
-    {"input": "example input", "expected": "expected output", "passed": true/false}
+    {
+      "input": "...",
+      "expected": "...",
+      "actualOutput": "What the code actually printed/returned",
+      "passed": boolean
+    }
   ]
 }`;
 
         const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: prompt
-                    }]
-                }],
-                generationConfig: {
-                    temperature: 0.2,
-                    topK: 40,
-                    topP: 0.95,
-                    maxOutputTokens: 1024,
-                }
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.1 } // Lower temperature for more deterministic JSON
             })
         });
 
@@ -66,41 +58,41 @@ RESPOND IN THIS EXACT JSON FORMAT ONLY (no other text):
         }
 
         const data = await response.json();
-
-        // Extract the text response
         const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-        if (!textResponse) {
-            throw new Error('No response from Gemini');
+        if (!textResponse) throw new Error('No response from Gemini');
+
+        // Robust JSON extraction
+        let jsonStr = textResponse;
+        const startIndex = textResponse.indexOf('{');
+        const endIndex = textResponse.lastIndexOf('}');
+
+        if (startIndex !== -1 && endIndex !== -1) {
+            jsonStr = textResponse.substring(startIndex, endIndex + 1);
+        } else {
+            // If no braces, it might be raw text failure
+            throw new Error("Invalid response format. Raw: " + textResponse.substring(0, 50));
         }
 
-        // Parse JSON from response (handle possible markdown code blocks)
-        let jsonStr = textResponse;
-        const jsonMatch = textResponse.match(/```json\s*([\s\S]*?)\s*```/);
-        if (jsonMatch) {
-            jsonStr = jsonMatch[1];
-        } else {
-            // Try to find JSON object directly
-            const objectMatch = textResponse.match(/\{[\s\S]*\}/);
-            if (objectMatch) {
-                jsonStr = objectMatch[0];
+        try {
+            return JSON.parse(jsonStr);
+        } catch (e) {
+            // Attempt to fix common JSON issues (newlines in strings) before failing
+            try {
+                return JSON.parse(jsonStr.replace(/\n/g, "\\n"));
+            } catch (e2) {
+                console.error("JSON Parse Error:", jsonStr);
+                throw new Error("AI response was not valid JSON.");
             }
         }
 
-        const result = JSON.parse(jsonStr);
-        return result;
-
     } catch (error) {
-        console.error('Gemini validation error:', error);
-
-        // Return a fallback response
+        console.error('Gemini error:', error);
         return {
             isCorrect: false,
             score: 0,
-            feedback: `Unable to validate code: ${error.message}. Please try again or check your code manually.`,
-            suggestions: ['Make sure your code is syntactically correct', 'Verify your solution logic'],
-            testCaseResults: [],
-            error: true
+            feedback: `Error: ${error.message}`,
+            testCaseResults: []
         };
     }
 }
