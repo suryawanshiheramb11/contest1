@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+dist/
+.env
+
+# Java
+target/
+*.class
+
+# System
+.DS_Store
+.vscode
+.idea
