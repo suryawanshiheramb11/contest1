@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = import.meta.env.PROD ? 'https://contest1.onrender.com' : '/api';
+const API_BASE = import.meta.env.PROD ? 'https://contest1.onrender.com/api' : '/api';
 
 const api = axios.create({
     baseURL: API_BASE,
